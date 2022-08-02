@@ -30,7 +30,7 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
   // create a new category
   Category.create({
-    category_name:req.body.category_name
+    categoryName:req.body.categoryName
   }).then(data=>{
     res.json(data)
   }).catch(err=>{
@@ -40,24 +40,41 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
   // update a category by its `id` value
-
+// 3RD TRY - WORKS
   Category.update(req.body,{
-    
-      category_name:req.params.category_name
-    },{
-      where:{
-        id:req.params.id
-      },
-    }).then(category=>{
-      if(!category){
-        res.status(404).json({msg:"no category found"})
-      }
-      res.json(category)
-    }).catch(err=>{
-      res.status(500).json({msg:"category update error",err})
-    })
-     
+    where:{
+      id:req.params.id
+    },
+  }).then(category=>{
+    if(!category){
+      res.status(404).json({msg:"no category found"})
+    }
+    res.json(category)
+  }).catch(err=>{
+    res.status(500).json({msg:"category update error",err})
+  })
+  
 });
+// SECOND TRY 
+//   Category.update(req.body,{
+    
+//       categoryName:req.params.categoryName
+//     },{
+//       where:{
+//         id:req.params.id
+//       },
+//     }).then(category=>{
+//       if(!category){
+//         res.status(404).json({msg:"no category found"})
+//       }
+//       res.json(category)
+//     }).catch(err=>{
+//       res.status(500).json({msg:"category update error",err})
+//     })
+
+     
+// });
+// FIRST TRY
   // Category.findByPk(function (category) {
   //     return category.id === parseInt(req.params.id);
   // });
@@ -65,7 +82,7 @@ router.put('/:id', (req, res) => {
   //   res.status(404).json({msg:"category not found"})
   // }else{
   //   Category.update({
-  //     category_name:req.body.category_name
+  //     categoryName:req.body.categoryName
   //   }).then(data=>{
   //     res.json(data)
   //   }).catch(err=>{
