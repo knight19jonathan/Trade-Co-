@@ -40,21 +40,39 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
   // update a category by its `id` value
-  let foundCategory = Category.findByPk(function (category) {
-      return category.id === parseInt(req.params.id);
-  });
-  if(!foundCategory){
-    res.status(404).json({msg:"category not found"})
-  }else{
-    Category.update({
-      category_name:req.body.category_name
-    }).then(data=>{
-      res.json(data)
+
+  Category.update(req.body,{
+    
+      category_name:req.params.category_name
+    },{
+      where:{
+        id:req.params.id
+      },
+    }).then(category=>{
+      if(!category){
+        res.status(404).json({msg:"no category found"})
+      }
+      res.json(category)
     }).catch(err=>{
       res.status(500).json({msg:"category update error",err})
     })
-  }
+     
 });
+  // Category.findByPk(function (category) {
+  //     return category.id === parseInt(req.params.id);
+  // });
+  // if(!category.id){
+  //   res.status(404).json({msg:"category not found"})
+  // }else{
+  //   Category.update({
+  //     category_name:req.body.category_name
+  //   }).then(data=>{
+  //     res.json(data)
+  //   }).catch(err=>{
+  //     res.status(500).json({msg:"category update error",err})
+  //   })
+  // }
+// });
 
 router.delete('/:id', (req, res) => {
   // delete a category by its `id` value
